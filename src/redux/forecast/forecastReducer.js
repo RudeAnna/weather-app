@@ -9,7 +9,7 @@ import {
   GET_WEATHER_REQUEST,
   GET_WEATHER_SUCCESS,
   ADD_CITY,
-  DELETE_CURRENT_CITY,
+  DELETE_CITIES,
   CHANGE_CURRENT_CITY,
   ADD_SELECTED_CITIES,
 } from "./forecastTypes";
@@ -104,23 +104,16 @@ const forecastReducer = (state = initialState, action) => {
         selectedCities: action.payload,
       };
 
-    case DELETE_CURRENT_CITY:
-      localStorage.setItem(
-        "allCities",
-        JSON.stringify(
-          state.selectedCities.filter((city) => city !== action.payload)
-        )
-      );
-      localStorage.setItem(
-        "city",
-        state.selectedCities.filter((city) => city !== action.payload)
+    case DELETE_CITIES:
+      localStorage.removeItem(
+        "allCities");
+      localStorage.removeItem(
+        "city"
       );
       return {
         ...state,
-        selectedCities: state.selectedCities.filter(
-          (city) => city !== action.payload
-        ),
-        currentCity: state.selectedCities.find((el) => el !== action.payload),
+        selectedCities: [],
+        currentCity: "",
       };
 
     default:

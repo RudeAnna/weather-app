@@ -10,7 +10,7 @@ import {
   GET_WEATHER_SUCCESS,
   GET_WEATHER_FAILURE,
   ADD_CITY,
-  DELETE_CURRENT_CITY,
+  DELETE_CITIES,
   CHANGE_CURRENT_CITY,
   ADD_SELECTED_CITIES,
 } from "./forecastTypes";
@@ -143,6 +143,6 @@ export const addSelectedCities = (cities) => {
   return { type: ADD_SELECTED_CITIES, payload: cities };
 };
 
-export const deleteCurrentCity = (city) => {
-  return { type: DELETE_CURRENT_CITY, payload: city };
+export const deleteCities = () => {
+  return { type: DELETE_CITIES };
 };

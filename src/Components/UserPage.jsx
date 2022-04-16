@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../redux/auth/authActions";
 import {
-  changeCurrentCity,
-  deleteCurrentCity,
+	changeCurrentCity,
+	deleteCities,
 } from "../redux/forecast/forecastActions";
 import WeatherCard from "./WeatherCard";
 import Fab from "@mui/material/Fab";
@@ -17,99 +17,98 @@ import { Button } from "@mui/material";
 import { blue } from "@mui/material/colors";
 
 const UserPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [currentCity, setCurrentCity] = useState("");
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const [currentCity, setCurrentCity] = useState("");
 
-  const handleUserLogout = (e) => {
-    e.preventDefault();
-    dispatch(logoutUser());
-    dispatch(deleteCurrentCity(city));
-    navigate("/");
-  };
+	const handleUserLogout = (e) => {
+		e.preventDefault();
+		dispatch(logoutUser());
+		dispatch(deleteCities(city));
+		navigate("/");
+	};
 
-  const city = useSelector((state) => state?.forecast?.currentCity);
-  const selectedCities = useSelector(
-    (state) => state?.forecast?.selectedCities
-  );
-  const { currentUser } = useSelector((state) => state?.auth);
+	const city = useSelector((state) => state?.forecast?.currentCity);
+	const selectedCities = useSelector(
+		(state) => state?.forecast?.selectedCities
+	);
+	const { currentUser } = useSelector((state) => state?.auth);
 
-  const handleCityChange = (e) => {
-    setCurrentCity(e.target.value);
-    dispatch(changeCurrentCity(e.target.value));
-  };
+	const handleCityChange = (e) => {
+		setCurrentCity(e.target.value);
+		dispatch(changeCurrentCity(e.target.value));
+	};
 
-  useEffect(() => {
-    setCurrentCity(city);
-  }, [dispatch, city]);
+	useEffect(() => {
+		setCurrentCity(city);
+	}, [dispatch, city]);
 
-  return (
-    <div>
-      <div className="top-bar">
-        <div className="top-bar-container">
-          <Fab
-            color="primary"
-            aria-label="add"
-            size="small"
-            style={{
-              background: blue[600],
-            }}
-          >
-            <AddIcon onClick={() => navigate("/add")} />
-          </Fab>
-          <FormControl sx={{ m: 1, minWidth: 200 }}>
-            <InputLabel id="demo-simple-select-autowidth-label">
-              city
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              defaultValue=''
-              value={currentCity}
-              onChange={handleCityChange}
-              autoWidth
-              label="City"
-            >
-              {selectedCities?.map((city) => (
-                <MenuItem key={Math.random()} value={city}>
-                  {city}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+	return (
+		<div>
+			<div className="top-bar">
+				<div className="top-bar-container">
+					<Fab
+						color="primary"
+						aria-label="add"
+						size="small"
+						style={{
+							background: blue[600],
+						}}
+					>
+						<AddIcon onClick={() => navigate("/add")} />
+					</Fab>
+					<FormControl sx={{ m: 1, minWidth: 200 }}>
+						<InputLabel id="demo-simple-select-autowidth-label">
+							city
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-standart-label"
+							id="demo-simple-select-standart"
+							defaultValue=""
+							value={currentCity}
+							onChange={handleCityChange}
+							label="City"
+						>
+							{selectedCities?.map((city) => (
+								<MenuItem divider={true} key={Math.random()} value={city}>
+									{city}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 
-          <p>Hello, {currentUser}!</p>
-          <button
-            onClick={(e) => handleUserLogout(e)}
-            variant="contained"
-            color="secondary"
-            className="logout-btn"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-      <div className="profile-wrapper">
-        {!city ? (
-          <div className="profile-wrapper weather-card">
-            <p>No tracked cities found</p>
-            <Button
-              onClick={() => navigate("/add")}
-              variant="contained"
-              color="secondary"
-              style={{
-                background: blue[600],
-              }}
-            >
-              Add city
-            </Button>
-          </div>
-        ) : (
-          <WeatherCard />
-        )}
-      </div>
-    </div>
-  );
+					<p className="user-name">Hello, {currentUser}!</p>
+					<button
+						onClick={(e) => handleUserLogout(e)}
+						variant="contained"
+						color="secondary"
+						className="logout-btn"
+					>
+						Logout
+					</button>
+				</div>
+			</div>
+			<div className="profile-wrapper">
+				{!city ? (
+					<div className="profile-wrapper weather-card">
+						<p>No tracked cities found</p>
+						<Button
+							onClick={() => navigate("/add")}
+							variant="contained"
+							color="secondary"
+							style={{
+								background: blue[600],
+							}}
+						>
+							Add city
+						</Button>
+					</div>
+				) : (
+					<WeatherCard />
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default UserPage;
